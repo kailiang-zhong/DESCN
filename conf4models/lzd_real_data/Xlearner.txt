@@ -1,0 +1,28 @@
+lr: 0.001
+decay_rate: 0.95
+decay_step_size: 1
+l2: 0.001
+use_ps: 0
+model_name: "X_learner_"
+
+pred_output_dir: "/home/admin/dufeng/ESX_Model/results/lzd_real"
+
+
+n_experiments: 5
+batch_size: 5000
+base_dim: 128
+val_rate: 0.2
+do_rate: 0.1
+normalization: "divide"
+epochs: 5
+
+log_step: 1
+pred_step: 1
+optim: 'Adam'
+
+
+verbose: 0
+data_train_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.train.npz"
+data_test_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.test.npz"
+summary_base_dir: "/home/admin/dufeng/ESX_Model/runs"
+overwrite: 1

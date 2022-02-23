@@ -1,0 +1,29 @@
+lr: 0.001
+decay_rate: 0.95
+decay_step_size: 1
+l2: 0.001
+use_ps: 1
+model_name: "X_learner"
+
+n_experiments: 1
+batch_size: 5000
+base_dim: 128
+val_rate: 0.2
+do_rate: 0.1
+normalization: "divide"
+epochs: 1
+
+log_step: 1
+pred_step: 1
+optim: 'Adam'
+device: "cuda:1"
+
+verbose: 1
+pred_output_dir: "/Users/brice/Documents/git_resp/ESX/results/pred"
+data_train_path: "/Users/brice/Documents/dataset4uplift/lzd_real_data/bin_prob_dataset_id_0115/real_bin_set_full.5.train.npz"
+data_test_path: "/Users/brice/Documents/dataset4uplift/lzd_real_data/bin_prob_dataset_id_0115/real_bin_set_full.5.test.npz"
+summary_base_dir: "/Users/brice/Documents/git_resp/ESX/runs"
+overwrite: 1
+
+sample_alpha: 0
+total_size: 0

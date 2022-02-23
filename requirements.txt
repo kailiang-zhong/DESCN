@@ -1,0 +1,7 @@
+geomloss==0.2.4
+hydra-core==1.1.1
+numpy==1.19.5
+pandas==1.3.5
+scikit_learn==1.0.2
+scikit_uplift==0.4.0
+torch==1.7.1

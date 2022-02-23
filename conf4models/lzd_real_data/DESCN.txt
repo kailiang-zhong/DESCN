@@ -1,0 +1,39 @@
+lr: 0.001
+decay_rate: 0.95
+decay_step_size: 1
+l2: 0.001
+model_name: "DESCN_"
+
+pred_output_dir: "/home/admin/dufeng/ESX_Model/results/lzd_real"
+
+n_experiments: 5
+batch_size: 5000
+share_dim: 128
+base_dim: 64
+reweight_sample: 1
+val_rate: 0.2
+do_rate: 0.1
+normalization: "divide"
+epochs: 5
+log_step: 50
+pred_step: 1
+optim: 'Adam'
+
+prpsy_w: 0.5
+escvr1_w: 0.5
+escvr0_w: 1
+h1_w: 0
+h0_w: 0
+mu0hat_w: 0.5
+mu1hat_w: 1
+
+#wass,mmd
+imb_dist: "wass"
+# if imb_dist_w <=0 mean no use imb_dist_loss
+imb_dist_w: 0
+
+verbose: 0
+
+data_train_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.train.npz"
+data_test_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.test.npz"
+summary_base_dir: "/home/admin/dufeng/ESX_Model/runs"

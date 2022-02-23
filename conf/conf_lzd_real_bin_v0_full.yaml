@@ -1,0 +1,49 @@
+lr: 0.001
+decay_rate: 0.95
+decay_step_size: 1
+l2: 0.001
+model_name: "model_name"
+
+n_experiments: 1
+batch_size: 3000
+share_dim: 128
+base_dim: 64
+reweight_sample: 1
+val_rate: 0.01
+do_rate: 0.1
+normalization: "divide"
+epochs: 5
+log_step: 1
+pred_step: 1
+optim: 'Adam'
+
+BatchNorm1d : "true"
+
+# loss weights
+prpsy_w: 0
+escvr1_w: 0
+escvr0_w: 0
+
+h1_w: 0.5
+h0_w: 0.1
+#***sub space's loss weights
+mu0hat_w: 0
+mu1hat_w: 0
+
+# CFR loss
+#wass,mmd
+imb_dist: "wass"
+# if imb_dist_w <=0 mean no use imb_dist_loss
+imb_dist_w: 0.1
+
+device: "cuda:1"
+
+verbose: 1
+pred_output_dir: "/Users/brice/Documents/git_resp/ESX/results/pred"
+data_train_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.train.npz"
+data_test_path: "/home/admin/uplift_data/lzd_real_data_id_v0/real_bin_set_full.5.test.npz"
+summary_base_dir: "/home/admin/dufeng/ESX_Model/runs"
+loss: "log"
+overwrite: 1
+sample_alpha: 0
+total_size: 0
