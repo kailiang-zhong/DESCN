@@ -12,7 +12,7 @@ lzd_data_public/
 ```
 
 ## Information fingerprint of data files
-To ensure that data files is not tampered with.
+To ensure that data files are not tampered with.
 ```shell
 MD5 (lzd_data_public.zip) = 545bb0eae05cca58f0d813a990ed9cba 
 MD5 (full_trainset.csv) = efffc70375e700bcb91a9d41eddd7f66
