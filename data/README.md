@@ -20,7 +20,7 @@ MD5 (full_trainset.csv) = efffc70375e700bcb91a9d41eddd7f66
 MD5 (full_testset.csv) = 9058fa57b984f0112a1ecf71dc52fb1e
 ```
 ## Data description
-The trainning set :`full_trainset.csv`
+The trainning set: `full_trainset.csv`
 
 | group        |   num   |     sum(label) |   E(label=1) |
 |--------------|:-------:|---------------:|-------------:|
@@ -29,7 +29,7 @@ The trainning set :`full_trainset.csv`
   
 &nbsp;
 
-The test set:`full_testset.csv`
+The test set: `full_testset.csv`
 
 | group        |   num   |     sum(label) | E(label=1) |
 |--------------|:-------:|---------------:|-----------:|
