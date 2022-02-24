@@ -4,8 +4,7 @@
 You could download the dataset using([Google Drive](https://drive.google.com/file/d/19iSXsbRXJWvuSFHdcLb0Vi9JCP9Fu41s/view?usp=sharing ) | [Baidu Drive](https://pan.baidu.com/s/1CKJvzow7UFGwrdXbkt1mQA) with code: 75hr | [Dropbox](https://www.dropbox.com/s/07r7592h9mfijsb/lzd_data_public.zip?dl=0))
 
 
-## File structure:
-
+## File structure
 ```python
 lzd_data_public/
     full_trainset.csv # the training set which contains treatment bias.
