@@ -19,6 +19,17 @@ MD5 (full_trainset.csv) = efffc70375e700bcb91a9d41eddd7f66
 MD5 (full_testset.csv) = 9058fa57b984f0112a1ecf71dc52fb1e
 ```
 ## Data description
+Data fields:  
+There are 86 fields in total, of which 83 are features(f0~f82).
+```
+data_id
+label
+is_treat
+f0
+f1
+...
+f82
+```
 The trainning set: `full_trainset.csv`
 
 | group        |   num   |     sum(label) |   E(label=1) |
@@ -34,4 +45,3 @@ The test set: `full_testset.csv`
 |--------------|:-------:|---------------:|-----------:|
 | treatment    | 94682  |          3503 |      3.70%|
 | no treatment | 86987  |           2893 |      3.33% |
-
