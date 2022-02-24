@@ -11,7 +11,7 @@ lzd_data_public/
     full_testset.csv # the test set which is randomized.
 ```
 
-## Information fingerprint of data files
+## Information fingerprint for data files
 To ensure that data files are not tampered with.
 ```shell
 MD5 (lzd_data_public.zip) = 545bb0eae05cca58f0d813a990ed9cba 
