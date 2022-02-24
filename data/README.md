@@ -9,6 +9,7 @@ You could download the dataset using([Google Drive](https://drive.google.com/fil
 lzd_data_public/
     full_trainset.csv # the training set which contains treatment bias.
     full_testset.csv # the test set which is randomized.
+    LICENSE
 ```
 
 ## Information fingerprint for data files
