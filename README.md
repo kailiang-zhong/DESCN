@@ -19,6 +19,8 @@ all models's hyper-parameters is save in `./conf4models`.
 >1. All path related configuration options must be set an absolute path.
 >2. `./results/lzd_real` and `./runs` should be created. 
 
+## Dataset
+`./data` contain the real-world Production Dataset from E-commerce platform Lazada.
 
 ## Python packages version
 - python == 3.7
