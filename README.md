@@ -1,7 +1,7 @@
 DESCN
 -------
 Implementation of our KDD2022 paper: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation
-
+![](images/ESN_Xnetwork_DESCN.jpg)
 
 ## Reproduce the experimental results
 The execution process and results can be viewed in `DeepModels_real_data.ipynb` and `CasualForest_BART_real_data.ipynb`    
