@@ -83,7 +83,7 @@ def run(main_process, eval_process, cfg_file, num_runs, data_train_path=None, da
             cfg["data_train_path"] = data_train_path
             cfg["data_test_path"] = data_test_path
 
-        # 获得当前时间时间戳
+        # Get the current time (timestamp)
         now = int(time.time())
         # 转换为其他日期格式,如:"%Y%m%d_%H:%M:%S"
         timeArray = time.localtime(now)

@@ -68,14 +68,12 @@ def validation_split(yt, val_fraction):
 
 
 ''' genarate symt data, just for test '''
-
-
 def gen_data(n, dim):
-    n_data = torch.ones(n, dim)  # 每条数据拥有50维
+    n_data = torch.ones(n, dim)
     x0 = torch.normal(1 * n_data, 1)  # + 0.1*torch.normal(0.01*n_data,1)
-    y0 = torch.zeros(n)  # 第0类
+    y0 = torch.zeros(n)
     x1 = torch.normal(1.5 * n_data, 1)  # + 0.1*torch.normal(0.01*n_data,1)
-    y1 = torch.ones(n)  # 第1类
+    y1 = torch.ones(n)
     data = { 'x': np.expand_dims(torch.cat((x0, x1), 0).cpu().detach().numpy(), axis=2)
         , 'yf': np.expand_dims(torch.cat((y0, y1), 0).cpu().detach().numpy(), axis=1)
              }
@@ -143,7 +141,7 @@ def load_data(fname):
 # def get_embedding_dims(train_X: pd.DataFrame, embedding_dim) -> Tuple(List((int, int)), int):
 #     """Get embedding layer size and concat_feature_vec_dim"""
 #     field_dims = list(train_X.max())
-#     field_dims = list(map(lambda x: x+1, field_dims))  # 各特征量的最大值+1
+#     field_dims = list(map(lambda x: x+1, field_dims))
 #
 #     embedding_sizes = []
 #     concat_dim = 0
@@ -169,9 +167,6 @@ def validation_split(x, val_fraction):
     return I_train, I_valid
 
 
-''' 评估数据集，并返回预测结果和loss  '''
-
-
 def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e, eff_tau=None, i_exp=None):
     logging.info("group_name:{}, evalWithData... -----------------------------------".format(group_name))
     writer_flag = not writer is None
@@ -179,14 +174,14 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
     p_t = torch.mean(t).item()
     if cfg.reweight_sample:
         w_t = t / (
-                2 * p_t)  # p_t 是 p = tf.placeholder("float", name='p_treated'), ;p_treated = np.mean(D['t'][I_train,:]) , treatment 比例
-        w_c = (1 - t) / (2 * (1 - p_t))  # 源代码是 (1 - t) / (2 * 1 - p_t)， 但应该有误
+                2 * p_t)
+        w_c = (1 - t) / (2 * (1 - p_t))
         sample_weight = w_t + w_c
     else:
         sample_weight = torch.ones_like(t)
         p_t = 0.5
 
-    # set loss functions，不考虑随机的treatment loss
+    # set loss functions
     sample_weight = sample_weight[~e.bool()]
     loss_w_fn = nn.BCELoss(weight=sample_weight)  # for probability
     loss_fn = nn.BCELoss()  # for probability
@@ -197,24 +192,6 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
     p_prpsy_logit, p_escvr1, p_escvr0, p_tau_logit, p_mu1_logit, p_mu0_logit, p_prpsy, p_mu1, p_mu0, p_h1, p_h0, shared_h = model(
         x)
 
-    # tau outcome
-    # h1subh0:h1-h0,tau_prob_net, tau_logit_net(h1-mu0)
-    # if cfg.tau_outcome == "tau_prob_net":
-    #     p_tau = torch.sigmoid(p_tau_logit)
-    #     p_yf = p_h1 * t + p_mu0 * (1 - t)
-    #     p_ycf = p_mu0 * t + p_h1 * (1 - t)
-    # elif cfg.tau_outcome == "tau_logit_net":
-    #     # output tau logit， no sigmoid
-    #     p_tau = (p_h1 - p_mu0) * 0.5 + (p_mu1 - p_h0) * 0.5
-    #     p_yf = p_h1 * t + p_h0 * (1 - t)
-    #     p_ycf = p_mu0 * t + p_mu1 * (1 - t)
-    # elif cfg.tau_outcome == "h1subh0":
-    #     # as default: tau = h1-h0
-    #     p_tau = p_h1 - p_h0
-    #     p_yf = p_h1 * t + p_h0 * (1 - t)
-    #     p_ycf = p_h0 * t + p_h1 * (1 - t)
-    # else:
-    #     logging.error("error for cfg.tau_outcome:{}".format(cfg.tau_outcome))
 
     # as default: tau = h1-h0
     p_tau = p_h1 - p_h0
@@ -235,12 +212,10 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
         if writer_flag:
             writer.add_scalar("{}/auuc_score".format(group_name), auuc_score, step_or_epoch)
 
-    # 不考虑随机的treatment loss
     prpsy_loss = cfg.prpsy_w * loss_w_with_logit_fn(p_prpsy_logit[~e.bool()], t[~e.bool()])
-    escvr1_loss = cfg.escvr1_w * loss_w_fn(p_escvr1[~e.bool()], (yf * t)[~e.bool()])
-    escvr0_loss = cfg.escvr0_w * loss_w_fn(p_escvr0[~e.bool()], (yf * (1 - t))[~e.bool()])
+    estr_loss = cfg.escvr1_w * loss_w_fn(p_escvr1[~e.bool()], (yf * t)[~e.bool()])
+    escr_loss = cfg.escvr0_w * loss_w_fn(p_escvr0[~e.bool()], (yf * (1 - t))[~e.bool()])
 
-    # 交叉后的子空间概率拟合。 选用
     h1_loss = cfg.h1_w * loss_fn(p_h1[t.bool()], yf[t.bool()])  # * (1 / (2 * p_t))
     h0_loss = cfg.h0_w * loss_fn(p_h0[~t.bool()], yf[~t.bool()])  # * (1 / (2 * (1 - p_t)))
 
@@ -254,25 +229,18 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
 
     # bias loss
     imb_dist = 0
-    # 矩阵太大
-    # if cfg.imb_dist_w > 0:
-    #     if cfg.imb_dist == "wass":
-    #         imb_dist = wasserstein_torch(shared_h, t, 0.5)
-    #     elif cfg.imb_dist == "mmd":
-    #         imb_dist = mmd2_rbf_torch(shared_h, t, 0.5)
-    #     else:
-    #         sys.exit(1)
+
     imb_dist_loss = cfg.imb_dist_w * imb_dist
 
-    mu1hat_loss = cfg.mu1hat_w * loss_fn(torch.sigmoid(p_mu0_logit + p_tau_logit)[t.bool()],
+    cross_tr_loss = cfg.mu1hat_w * loss_fn(torch.sigmoid(p_mu0_logit + p_tau_logit)[t.bool()],
                                          yf[t.bool()])
-    mu0hat_loss = cfg.mu0hat_w * loss_fn(torch.sigmoid(p_mu1_logit - p_tau_logit)[~t.bool()],
+    cross_cr_loss = cfg.mu0hat_w * loss_fn(torch.sigmoid(p_mu1_logit - p_tau_logit)[~t.bool()],
                                          yf[~t.bool()])
 
 
-    total_loss = prpsy_loss + escvr1_loss + escvr0_loss + \
+    total_loss = prpsy_loss + estr_loss + escr_loss + \
                  h1_loss + h0_loss + \
-                 mu1hat_loss + mu0hat_loss + \
+                 cross_tr_loss + cross_cr_loss + \
                  imb_dist_loss
 
     logging.info("group_name {}, {} {}, total_loss {}".format(group_name, iter_name, step_or_epoch, total_loss))
@@ -285,7 +253,7 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
         "p_tau {}, {}, {} , mean(p_tau[~t]) :{}".format(group_name, iter_name, step_or_epoch,
                                                         torch.mean(p_tau[~t.bool()]).item()))
 
-    # 对于虚拟的数据，直接计算 预测tau 与真实tau的差距
+    # For virtual data
     if eff_tau is not None:
         # att = torch.mean(yf[t > 0]) - torch.mean(yf[(1 - t) > 0])
         # att_pred = torch.mean(p_tau[t > 0])
@@ -311,16 +279,16 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
             writer.add_scalar("{}/rmse_tau[~t](in true)".format(group_name), rmse_tau_c, step_or_epoch)
 
     if writer_flag:
-        writer.add_scalar("{}/escvr1_loss".format(group_name), escvr1_loss, step_or_epoch)
-        writer.add_scalar("{}/escvr0_loss".format(group_name), escvr0_loss, step_or_epoch)
+        writer.add_scalar("{}/escvr1_loss".format(group_name), estr_loss, step_or_epoch)
+        writer.add_scalar("{}/escvr0_loss".format(group_name), escr_loss, step_or_epoch)
         # writer.add_scalar("{}/bias_att".format(group_name), bias_att, epoch)
         writer.add_scalar("{}/total_loss".format(group_name), total_loss, step_or_epoch)
         writer.add_scalar("{}/prpsy_loss".format(group_name), prpsy_loss, step_or_epoch)
         writer.add_scalar("{}/h1_loss".format(group_name), h1_loss, step_or_epoch)
         writer.add_scalar("{}/h0_loss".format(group_name), h0_loss, step_or_epoch)
 
-        writer.add_scalar("{}/mu0hat_loss".format(group_name), mu0hat_loss, step_or_epoch)
-        writer.add_scalar("{}/mu1hat_loss".format(group_name), mu1hat_loss, step_or_epoch)
+        writer.add_scalar("{}/mu0hat_loss".format(group_name), cross_cr_loss, step_or_epoch)
+        writer.add_scalar("{}/mu1hat_loss".format(group_name), cross_tr_loss, step_or_epoch)
 
         writer.add_scalar("{}/imb_dist".format(group_name), imb_dist, step_or_epoch)
 
@@ -391,7 +359,7 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
 
         writer.flush()
 
-    dict_result = { "loss": [total_loss, prpsy_loss, escvr0_loss, escvr1_loss, h1_loss, h0_loss, mu1hat_loss, mu0hat_loss],
+    dict_result = { "loss": [total_loss, prpsy_loss, escr_loss, estr_loss, h1_loss, h0_loss, cross_tr_loss, cross_cr_loss],
                     "p_tau": p_tau, "p_yf": p_yf, "p_ycf": p_ycf, "p_prpsy": p_prpsy }
     return dict_result
 
@@ -627,24 +595,23 @@ def train(data_dict, data_test_dict, device, cfg):
                 inputs.to(device)
                 t_labels = torch.unsqueeze(t_labels.to(device), 1)
                 y_labels = torch.unsqueeze(y_labels.to(device), 1)
-                e_labels = torch.unsqueeze(e_labels.to(device), 1)
+                e_labels = torch.unsqueeze(e_labels.to(device), 1) # e_ Labels is used to mark whether it is a random sample
 
                 ''' Compute sample reweighting '''
                 p_t = torch.mean(t_labels).item()
                 if cfg.reweight_sample:
                     w_t = t_labels / (
-                            2 * p_t)  # p_t 是 p = tf.placeholder("float", name='p_treated'), ;p_treated = np.mean(D['t'][I_train,:]) , treatment 比例
-                    w_c = (1 - t_labels) / (2 * (1 - p_t))  # 源代码是 (1 - t) / (2 * 1 - p_t)， 但应该有误
+                            2 * p_t)
+                    w_c = (1 - t_labels) / (2 * (1 - p_t))
                     sample_weight = w_t + w_c
                 else:
                     sample_weight = torch.ones_like(t_labels)
                     p_t = 0.5
 
                 # set loss functions
-                # 不考虑非随机样本
                 sample_weight = sample_weight[~e_labels.bool()]
-                loss_w_fn = nn.BCELoss(weight=sample_weight)  # for probability
-                loss_fn = nn.BCELoss()  # for probability
+                loss_w_fn = nn.BCELoss(weight=sample_weight)
+                loss_fn = nn.BCELoss()
                 loss_mse = nn.MSELoss()
                 loss_with_logit_fn = nn.BCEWithLogitsLoss()  # for logit
                 loss_w_with_logit_fn = nn.BCEWithLogitsLoss(
@@ -653,49 +620,30 @@ def train(data_dict, data_test_dict, device, cfg):
                 # Initialize gradient
                 optimizer.zero_grad()
                 # caluculate losses
-                p_prpsy_logit, p_escvr1, p_escvr0, p_tau_logit, p_mu1_logit, p_mu0_logit, p_prpsy, p_mu1, p_mu0, p_h1, p_h0, shared_h = model(
+                p_prpsy_logit, p_estr, p_escr, p_tau_logit, p_mu1_logit, p_mu0_logit, p_prpsy, p_mu1, p_mu0, p_h1, p_h0, shared_h = model(
                     inputs)
 
                 try:
-                    # 不考虑随机treatment 的样本
+                    # loss for propensity
                     prpsy_loss = cfg.prpsy_w * loss_w_with_logit_fn(p_prpsy_logit[~e_labels.bool()],
                                                                     t_labels[~e_labels.bool()])
-                    # 全空间概率拟合, 不考虑随机treatment 的样本
-                    escvr1_loss = cfg.escvr1_w * loss_w_fn(p_escvr1[~e_labels.bool()],
+                    # loss for ESTR, ESCR
+                    estr_loss = cfg.escvr1_w * loss_w_fn(p_estr[~e_labels.bool()],
                                                            (y_labels * t_labels)[~e_labels.bool()])
-                    escvr0_loss = cfg.escvr0_w * loss_w_fn(p_escvr0[~e_labels.bool()],
+                    escr_loss = cfg.escvr0_w * loss_w_fn(p_escr[~e_labels.bool()],
                                                            (y_labels * (1 - t_labels))[~e_labels.bool()])
 
-                    # escvr1_loss = loss_w_fn(p_escvr1, y_labels * t_labels)
-                    # escvr0_loss = loss_w_fn(p_escvr0, y_labels * (1 - t_labels))
-                    # prpsy_loss = loss_w_with_logit_fn(p_prpsy_logit, t_labels)
-
-                    # 子空间概率拟合
-                    h1_loss = cfg.h1_w * loss_fn(p_h1[t_labels.bool()],
+                    #loss for TR, CR
+                    tr_loss = cfg.h1_w * loss_fn(p_h1[t_labels.bool()],
                                                  y_labels[t_labels.bool()])  # * (1 / (2 * p_t))
-                    h0_loss = cfg.h0_w * loss_fn(p_h0[~t_labels.bool()],
+                    cr_loss = cfg.h0_w * loss_fn(p_h0[~t_labels.bool()],
                                                  y_labels[~t_labels.bool()])  # * (1 / (2 * (1 - p_t)))
 
-                    # escvr1_loss = h1_loss
-                    # escvr0_loss = h0_loss
 
-                    # print("p_mu1.shape {}".format(p_mu1.shape))
-                    # print("p_mu1[t_labels.bool()].shape {}".format(p_mu1[t_labels.bool()].shape))
-
-                    # 子空间概率拟合
-                    # h1_loss = cfg.h1_w * loss_with_logit_fn(p_mu1_logit[t_labels.bool()],
-                    #                                           y_labels[t_labels.bool()])  # * (1 / (2 * p_t))
-                    # h0_loss = cfg.h0_w * loss_with_logit_fn(p_mu0_logit[~t_labels.bool()],
-                    #                                           y_labels[~t_labels.bool()])  # * (1 / (2 * (1 - p_t)))
-
-                    # # X loss for h1,mu1
-                    # x1loss = cfg.x1loss_w * loss_mse(p_h1, p_mu1)
-                    # # X loss for h0,mu0
-                    # x0loss = cfg.x0loss_w * loss_mse(p_h0, p_mu0)
-
-                    mu1hat_loss = cfg.mu1hat_w * loss_fn(torch.sigmoid(p_mu0_logit + p_tau_logit)[t_labels.bool()],
+                    #loss for cross TR: mu1_prime, cross CR: mu0_prime
+                    cross_tr_loss = cfg.mu1hat_w * loss_fn(torch.sigmoid(p_mu0_logit + p_tau_logit)[t_labels.bool()],
                                                          y_labels[t_labels.bool()])
-                    mu0hat_loss = cfg.mu0hat_w * loss_fn(torch.sigmoid(p_mu1_logit - p_tau_logit)[~t_labels.bool()],
+                    cross_cr_loss = cfg.mu0hat_w * loss_fn(torch.sigmoid(p_mu1_logit - p_tau_logit)[~t_labels.bool()],
                                                          y_labels[~t_labels.bool()])
 
                     imb_dist = 0
@@ -708,15 +656,12 @@ def train(data_dict, data_test_dict, device, cfg):
                             sys.exit(1)
                     imb_dist_loss = cfg.imb_dist_w * imb_dist
 
-                    total_loss = prpsy_loss + escvr1_loss + escvr0_loss \
-                                 + h1_loss + h0_loss \
-                                 + mu1hat_loss + mu0hat_loss \
+                    total_loss = prpsy_loss + estr_loss + escr_loss \
+                                 + tr_loss + cr_loss \
+                                 + cross_tr_loss + cross_cr_loss \
                                  + imb_dist_loss
 
-                    # share_network_grad = torch.mean(torch.autograd.grad(total_loss, model.mu1_network.parameters(), retain_graph=True, create_graph=True)[0])
-                    # logging.info("share_network_grad:{}".format(share_network_grad))
-                    # if( share_network_grad is None or np.abs(share_network_grad)>1  ):
-                    #     logging.error("share_network_grad:{}".format(share_network_grad))
+
 
                     # Backpropagation
                     total_loss.backward()
@@ -726,10 +671,10 @@ def train(data_dict, data_test_dict, device, cfg):
 
                     running_total_loss += total_loss.item()
                     running_prpsy_loss += prpsy_loss.item()
-                    running_mu1_loss += mu1hat_loss.item()
-                    running_mu0_loss += mu0hat_loss.item()
-                    running_escvr1_loss += escvr1_loss.item()
-                    running_escvr0_loss += escvr0_loss.item()
+                    running_mu1_loss += cross_tr_loss.item()
+                    running_mu0_loss += cross_cr_loss.item()
+                    running_escvr1_loss += estr_loss.item()
+                    running_escvr0_loss += escr_loss.item()
 
                     '''save the graph, just saving for the first experiment.'''
                     if (i_exp == 0 and epoch == 0 and i == 0):
@@ -753,11 +698,6 @@ def train(data_dict, data_test_dict, device, cfg):
                 if i_exp == 0 and (train_step + 1) % LOGSTEP == 0:
                     if (cfg.verbose):
                         logging.info(f'i_exp:{i_exp},epochs:{epoch}, train_step:{train_step}, imb_dist:{imb_dist}')
-
-                        #    logging.info(
-                        #        f'epochs:{epoch}, train_step: {train_step}, running_total_loss: {running_total_loss}, running_prpsy_loss: {running_prpsy_loss},\
-                        # running_escvr1_loss: {running_escvr1_loss}, running_escvr0_loss: {running_escvr0_loss}, running_mu1_loss: {running_mu1_loss}, running_mu0_loss: {running_mu0_loss},\
-                        # running_h1_loss:{running_h1_loss}, running_h0_loss:{running_h0_loss}')
 
 
                         try:

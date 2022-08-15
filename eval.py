@@ -28,13 +28,12 @@ def load_data(file_path):
         data['tau'] = np.array([None])
         data['IS_SYNT'] = False
 
-    data['dim'] = data['x'].shape[1]  # 特征维度
-    data['n'] = data['x'].shape[0]  # 样本数
+    data['dim'] = data['x'].shape[1]  # Feature dimension
+    data['n'] = data['x'].shape[0]  # Number of samples
 
     return data
 
 
-# 评估函数
 def evaluate_bin(yf, t, tau_true, tau_pred):
     pehe = np.sqrt(np.mean(np.square(tau_pred - tau_true)))  # PEHE error
 
@@ -71,7 +70,7 @@ if __name__ == "__main__":
     data_test_path = sys.argv[3]
     model_name = sys.argv[4]
 
-    # 是否需要根据validation 的loss 来选择某次预测结果，避免选择过拟合的预测结果。
+    # Whether it is necessary to select a prediction result according to the loss of validation to avoid selecting the prediction result of over fitting.
     if_early_stop = "false"
     if len(sys.argv) > 4:
         if_early_stop = sys.argv[5]
@@ -100,7 +99,6 @@ if __name__ == "__main__":
     num_outputs = dict_test_result["p_tau"].shape[2]
     num_exps = dict_test_result["p_tau"].shape[1]
 
-    # 模拟数据重复生成了多份数据，每一份数据对应一次重复实验
     for i_exp in range(num_exps):
         print("i_exp:{}/{}".format(i_exp + 1, num_exps))
 
@@ -119,7 +117,6 @@ if __name__ == "__main__":
 
         # early stop
         ''' shape: [i_output, loss_list, i_exp] '''
-        ''' 最后一个loss 是validation 的total loss，以此作为early stop 依据 '''
         # loss_valid_all = dict_train_result["loss"][:, -1, i_exp]
         # i_sel = np.argmin(loss_valid_all)
         # if not if_early_stop == "true":

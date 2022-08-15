@@ -71,11 +71,11 @@ def validation_split(yt, val_fraction):
 
 
 def gen_data(n, dim):
-    n_data = torch.ones(n, dim)  # 每条数据拥有50维
+    n_data = torch.ones(n, dim)
     x0 = torch.normal(1 * n_data, 1)  # + 0.1*torch.normal(0.01*n_data,1)
-    y0 = torch.zeros(n)  # 第0类
+    y0 = torch.zeros(n)
     x1 = torch.normal(1.5 * n_data, 1)  # + 0.1*torch.normal(0.01*n_data,1)
-    y1 = torch.ones(n)  # 第1类
+    y1 = torch.ones(n)
     data = { 'x': np.expand_dims(torch.cat((x0, x1), 0).cpu().detach().numpy(), axis=2)
         , 'yf': np.expand_dims(torch.cat((y0, y1), 0).cpu().detach().numpy(), axis=1)
              }
@@ -140,17 +140,6 @@ def load_data(fname):
     return data
 
 
-# def get_embedding_dims(train_X: pd.DataFrame, embedding_dim) -> Tuple(List((int, int)), int):
-#     """Get embedding layer size and concat_feature_vec_dim"""
-#     field_dims = list(train_X.max())
-#     field_dims = list(map(lambda x: x+1, field_dims))  # 各特征量的最大值+1
-#
-#     embedding_sizes = []
-#     concat_dim = 0
-#     for field_dim in field_dims:
-#         embedding_sizes.append((field_dim, embedding_dim))
-#         concat_dim += embedding_dim
-#     return embedding_sizes, concat_dim
 
 def validation_split(x, val_fraction):
     """ Construct a train/validation split """
@@ -169,13 +158,12 @@ def validation_split(x, val_fraction):
     return I_train, I_valid
 
 
-''' 评估数据集，并返回预测结果和loss  '''
 def evalWithData(group_name, models, writer, step_or_epoch, cfg, x, yf, t, e, eff_tau=None, i_exp=None):
     logging.info("group_name:{}, evalWithData... -----------------------------------".format(group_name))
     writer_flag = not writer is None
 
 
-    # set loss functions，不考虑随机的treatment loss
+    # set loss functions
     loss_fn = nn.BCELoss()  # for probability
     loss_mse = nn.MSELoss()
     loss_with_logit_fn = nn.BCEWithLogitsLoss()  # for logit
@@ -502,10 +490,9 @@ def train(data_dict, data_test_dict, device, cfg):
                 inputs.to(device)
                 t_labels = torch.unsqueeze(t_labels.to(device), 1)
                 y_labels = torch.unsqueeze(y_labels.to(device), 1)
-                e_labels = torch.unsqueeze(e_labels.to(device), 1)
+                e_labels = torch.unsqueeze(e_labels.to(device), 1) # e_ Labels is used to mark whether it is a random sample
 
                 # set loss functions
-                # 不考虑非随机样本
                 loss_fn = nn.BCELoss()  # for probability
                 loss_with_logit_fn = nn.BCEWithLogitsLoss()  # for logit
                 loss_mse = nn.MSELoss()
@@ -633,7 +620,7 @@ def train(data_dict, data_test_dict, device, cfg):
             result_dict[group]["loss"].append(iexp_losses[group])
             if group == "train":
                 result_dict[group]["val"].append(I_valid)
-        ''' 格式化["train", "valid", "test"]数据集的预测结果和loss，并保存到本地'''
+        ''' Format the prediction results and loss of ["train", "valid", "test"] data set and save them locally '''
         for group in group_list:
             '''units, exp_i, outputs'''
             all_p_tau = np.array(np.swapaxes(np.swapaxes(result_dict[group]["p_tau"], 0, 2), 1, 2))
