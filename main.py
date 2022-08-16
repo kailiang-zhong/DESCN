@@ -189,7 +189,7 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
     loss_with_logit_fn = nn.BCEWithLogitsLoss()  # for logit
     loss_w_with_logit_fn = nn.BCEWithLogitsLoss(pos_weight=torch.tensor(1 / (2 * p_t)))  # for propensity loss
 
-    p_prpsy_logit, p_escvr1, p_escvr0, p_tau_logit, p_mu1_logit, p_mu0_logit, p_prpsy, p_mu1, p_mu0, p_h1, p_h0, shared_h = model(
+    p_prpsy_logit, p_estr, p_escr, p_tau_logit, p_mu1_logit, p_mu0_logit, p_prpsy, p_mu1, p_mu0, p_h1, p_h0, shared_h = model(
         x)
 
 
@@ -213,8 +213,8 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
             writer.add_scalar("{}/auuc_score".format(group_name), auuc_score, step_or_epoch)
 
     prpsy_loss = cfg.prpsy_w * loss_w_with_logit_fn(p_prpsy_logit[~e.bool()], t[~e.bool()])
-    estr_loss = cfg.escvr1_w * loss_w_fn(p_escvr1[~e.bool()], (yf * t)[~e.bool()])
-    escr_loss = cfg.escvr0_w * loss_w_fn(p_escvr0[~e.bool()], (yf * (1 - t))[~e.bool()])
+    estr_loss = cfg.escvr1_w * loss_w_fn(p_estr[~e.bool()], (yf * t)[~e.bool()])
+    escr_loss = cfg.escvr0_w * loss_w_fn(p_escr[~e.bool()], (yf * (1 - t))[~e.bool()])
 
     h1_loss = cfg.h1_w * loss_fn(p_h1[t.bool()], yf[t.bool()])  # * (1 / (2 * p_t))
     h0_loss = cfg.h0_w * loss_fn(p_h0[~t.bool()], yf[~t.bool()])  # * (1 / (2 * (1 - p_t)))
@@ -279,8 +279,8 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
             writer.add_scalar("{}/rmse_tau[~t](in true)".format(group_name), rmse_tau_c, step_or_epoch)
 
     if writer_flag:
-        writer.add_scalar("{}/escvr1_loss".format(group_name), estr_loss, step_or_epoch)
-        writer.add_scalar("{}/escvr0_loss".format(group_name), escr_loss, step_or_epoch)
+        writer.add_scalar("{}/estr_loss".format(group_name), estr_loss, step_or_epoch)
+        writer.add_scalar("{}/escr_loss".format(group_name), escr_loss, step_or_epoch)
         # writer.add_scalar("{}/bias_att".format(group_name), bias_att, epoch)
         writer.add_scalar("{}/total_loss".format(group_name), total_loss, step_or_epoch)
         writer.add_scalar("{}/prpsy_loss".format(group_name), prpsy_loss, step_or_epoch)
@@ -330,15 +330,15 @@ def evalWithData(group_name, model, writer, step_or_epoch, p_t, cfg, x, yf, t, e
         roc_auc = metrics.auc(fpr, tpr)
         writer.add_scalar("{}/:AUC  p_prpsy".format(group_name), roc_auc, step_or_epoch)
 
-        # for ESCVR1
+        # for ESTR
         fpr, tpr, threshold = metrics.roc_curve((t * yf).cpu().detach().numpy(),
-                                                p_escvr1.cpu().detach().numpy())
+                                                p_estr.cpu().detach().numpy())
         roc_auc = metrics.auc(fpr, tpr)
         writer.add_scalar("{}/:AUC  p_escvr1".format(group_name), roc_auc, step_or_epoch)
 
-        # for ESCVR0
+        # for ESCR
         fpr, tpr, threshold = metrics.roc_curve(((1 - t) * yf).cpu().detach().numpy(),
-                                                p_escvr0.cpu().detach().numpy())
+                                                p_escr.cpu().detach().numpy())
         roc_auc = metrics.auc(fpr, tpr)
         writer.add_scalar("{}/:AUC  p_escvr0".format(group_name), roc_auc, step_or_epoch)
 
