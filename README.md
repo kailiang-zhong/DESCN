@@ -4,7 +4,7 @@ Implementation of our KDD2022 paper: Deep Entire Space Cross Networks for Indivi
 ![](images/ESN_Xnetwork_DESCN.jpg)
 
 ## Reproduce the experimental results
-The execution process and results can be viewed in `CasualForest_BART_real_data.ipynb` and `DeepModels_real_data.ipynb` which contains the code for converting dataset from `.csv` format to `.npz` format. 
+The execution process and results can be viewed in `DeepModels_real_data.ipynb` which contains the code for converting dataset from `.csv` format to `.npz` format. 
     
 All experiments uses GPU for training and `CUDA Verson:11.4`
 ## Code usage
