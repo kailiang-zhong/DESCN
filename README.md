@@ -14,8 +14,7 @@ All experiments uses GPU for training and `CUDA Verson:11.4`
 `eval.py`: evaluation process for ACIC2019 dataset.  
 `search_parames.py`: A tool for scheduling training, prediction and evaluation.
 ## Configuration
-all models's hyper-parameters are saved in `./conf4models`  
-And `./conf` just contain a configuration temperature.
+All models's hyper-parameters are saved in `./conf4models`.
 
 NOTE:
 >- All **path related configuration options** must be set an absolute path.
