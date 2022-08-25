@@ -1,6 +1,10 @@
 DESCN
 -------
 Implementation of paper [DESCN: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation](https://arxiv.org/abs/2207.09920), which is accepted in [SIGKDD 2022](https://kdd.org/kdd2022/) Applied Data Science Track.
+
+This paper proposes Deep Entire Space Cross Networks (DESCN) to model treatment effects from an end-to-end perspective. 
+DESCN captures the integrated information of the treatment propensity, 
+the response, and the hidden treatment effect through a cross network in a multi-task learning manner. 
 ![](images/ESN_Xnetwork_DESCN.jpg)
 
 ## Reproduce the experimental results
