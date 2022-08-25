@@ -15,7 +15,7 @@ All experiments uses GPU for training and `CUDA Verson:11.4`
 `search_parames.py`: A tool for scheduling training, prediction and evaluation.
 
 A convenient way to call training and evaluation code serially:\
-```python search_params.py x_learner_main.py eval4real_data.py ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
+```python search_params.py main.py eval4real_data.py  ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
 More examples can be referred to code in `DeepModels_real_data.ipynb`
 
 
