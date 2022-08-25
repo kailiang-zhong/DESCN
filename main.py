@@ -855,6 +855,8 @@ def sample_imb_fn(x_, yf_, e_, t_, cfg):
     return x, yf, e, t
 
 
+#  `./conf` just contain a configuration temperature.
+# All models's hyper-parameters are saved in `./conf4models` and the hyperparameters are all here.
 @hydra.main(config_path='./conf', config_name='conf_lzd_real_bin_v0_full.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_lzd_real_bin_v0.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_acic_speed.yaml')
