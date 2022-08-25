@@ -1,6 +1,6 @@
 DESCN
 -------
-Implementation of our KDD2022 paper: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation
+Implementation of paper: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation, which is accepted in [SIGKDD 2022](https://kdd.org/kdd2022/) Applied Data Science Track.
 ![](images/ESN_Xnetwork_DESCN.jpg)
 
 ## Reproduce the experimental results
