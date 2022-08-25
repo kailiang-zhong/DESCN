@@ -640,8 +640,7 @@ def train(data_dict, data_test_dict, device, cfg):
             np.savez(npz_file_path, p_tau=all_p_tau, loss=all_losses, val=all_I_valid)
             logging.info("saving predict result as a file: {}...done".format(npz_file_path))
 
-#  `./conf` just contain a configuration temperature.
-# All models's hyper-parameters are saved in `./conf4models` and the hyperparameters are all here.
+# ./conf just contain a configuration temperature, which needs to be overwritten by the hyper-parameters in ./conf4models
 @hydra.main(config_path='./conf', config_name='conf_lzd_real_x_learner.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_lzd_real_bin_v0.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_acic_speed.yaml')
