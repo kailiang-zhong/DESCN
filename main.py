@@ -796,7 +796,7 @@ def train(data_dict, data_test_dict, device, cfg):
             result_dict[group]["loss"].append(iexp_losses[group])
             if group == "train":
                 result_dict[group]["val"].append(I_valid)
-        ''' 格式化["train", "valid", "test"]数据集的预测结果和loss，并保存到本地'''
+        ''' Format the prediction results and loss of ["train", "valid", "test"] data set and save them locally'''
         for group in group_list:
             '''units, exp_i, outputs'''
             all_p_prpsy = np.array(np.swapaxes(np.swapaxes(result_dict[group]["p_prpsy"], 0, 2), 1, 2))

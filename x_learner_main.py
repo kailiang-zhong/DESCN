@@ -497,8 +497,8 @@ def train(data_dict, data_test_dict, device, cfg):
                 loss_with_logit_fn = nn.BCEWithLogitsLoss()  # for logit
                 loss_mse = nn.MSELoss()
 
-                # 单数次 epoch 用来训练 mu_c,mu_t,propensity
-                # 双数次 epoch 用来训练 tau_c, tau_t
+                # The odd number of epoch is used for training mu_c,mu_t,propensity
+                # Even epochs are used for training tau_c, tau_t
                 if (epoch+1)%2 != 0:
                     train_list = ["mu_c", "mu_t", "propensity"]
                 else:
