@@ -855,7 +855,7 @@ def sample_imb_fn(x_, yf_, e_, t_, cfg):
     return x, yf, e, t
 
 
-# ./conf just contain a configuration temperature, which needs to be overwritten by the hyper-parameters in ./conf4models
+# ./conf just contain a configuration template as default for configuration, which needs to be overwritten(key-value wise) by the hyper-parameters in ./conf4models
 @hydra.main(config_path='./conf', config_name='conf_lzd_real_bin_v0_full.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_lzd_real_bin_v0.yaml')
 # @hydra.main(config_path='./conf', config_name='conf_acic_speed.yaml')
