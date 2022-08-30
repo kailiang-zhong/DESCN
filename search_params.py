@@ -39,7 +39,7 @@ def cfg_string(cfg):
 def is_used_cfg(cfg, used_cfg_file):
     cfg_str = cfg_string(cfg)
 
-    # rm model_name
+    # cfg_str is used to avoid repeated training with the same hyper-parameters. No need to include model_name.
     kv_list = [i for i in cfg_str.strip().split(',') if not i.startswith("model_name")]
     cfg_str = ",".join(kv_list)
 
@@ -85,7 +85,6 @@ def run(main_process, eval_process, cfg_file, num_runs, data_train_path=None, da
 
         # Get the current time (timestamp)
         now = int(time.time())
-        # 转换为其他日期格式,如:"%Y%m%d_%H:%M:%S"
         timeArray = time.localtime(now)
         otherStyleTime = time.strftime("%Y%m%d_%H%M%S", timeArray)
         if "share_dim" in cfg.keys():

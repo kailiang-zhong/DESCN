@@ -4,7 +4,6 @@ import numpy as np
 from sklift.metrics import qini_auc_score
 
 
-# 加载并解析
 def load_data(file_path):
     """ Load data set """
     data_in = np.load(file_path)
