@@ -24,7 +24,7 @@ the response, and the hidden treatment effect through a cross network in a multi
 
 
 ## Reproduce the experimental results
-The execution process and results can be viewed in `DeepModels_real_data.ipynb` which contains the code for converting dataset from `.csv` format to `.npz` format. 
+The execution process and results can be viewed in  [DeepModels_real_data.ipynb](DeepModels_real_data.ipynb) which contains the code for converting dataset from `.csv` format to `.npz` format. 
     
 All experiments uses GPU for training and `CUDA Verson:11.4`
 ## Code usage
@@ -36,11 +36,11 @@ All experiments uses GPU for training and `CUDA Verson:11.4`
 
 A convenient way to call training and evaluation code serially:\
 ```python search_params.py main.py eval4real_data.py  ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
-More examples can be referred to code in `DeepModels_real_data.ipynb`
+More examples can be referred to code in  [DeepModels_real_data.ipynb](DeepModels_real_data.ipynb)
 
 
 ## Configuration
-All models's hyper-parameters are saved in `./conf4models`.
+All models's hyper-parameters are saved in [./conf4models](conf4models).
 
 NOTE:
 >- All **path related configuration options** must be set an absolute path.
@@ -79,7 +79,7 @@ DESCN的思路受启发于[ESMM](https://arxiv.org/abs/1804.07931) 和[X-learner
 
 
 ## 复现实验
-实验执行过程和结果都在 `DeepModels_real_data.ipynb` 文件里，该文件包含的数据预处理代码会把`.csv` 格式的数据集做了采样并以`.npz` 格式导出. 
+实验执行过程和结果都在 [DeepModels_real_data.ipynb](DeepModels_real_data.ipynb) 文件里，该文件包含的数据预处理代码会把`.csv` 格式的数据集做了采样并以`.npz` 格式导出. 
     
 所有实验都使用了GPU做训练和预测，版本： `CUDA Verson:11.4`
 ## 代码使用方法
@@ -91,11 +91,11 @@ DESCN的思路受启发于[ESMM](https://arxiv.org/abs/1804.07931) 和[X-learner
 
 search_parames.py 工具调用例子:\
 ```python search_params.py main.py eval4real_data.py  ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
-更多例子可以查看 `DeepModels_real_data.ipynb`
+更多例子可以查看 [DeepModels_real_data.ipynb](DeepModels_real_data.ipynb)
 
 
 ## 模型参数配置
-所有模型超参数配置在 `./conf4models`文件夹中.
+所有模型超参数配置在 [./conf4models](conf4models)文件夹中.
 
 注意:
 >- 所有关于路径的配置项必须填写绝对路径
