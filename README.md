@@ -71,7 +71,7 @@ DESCN 要解决的问题是预估binary的干预对结果的增量影响，比�
 - Treatment effect: 干预所带来的影响。比如给一个用户发优惠券，treatment effect就是优惠券这个干预带来的增量购买概率。其他常见的干预有某项政策实施、药物施加等。
 - Control group: 对照组，表示无施加干预观测到的样本
 - Treatment group: 干预组，表示有施加干预观测到的样本
-- The counterfactual:我们永远只能观测的其中一种事实（要么是干预的结果、要么是无干预的结果）
+- The counterfactual: 只能观测的其中一种事实（要么是干预的结果、要么是无干预的结果）
 
 
 DESCN的思路受启发于[ESMM](https://arxiv.org/abs/1804.07931) 和[X-learner](https://arxiv.org/abs/1706.03461) ：从端到端角度对treatment-effects进行建模， 通过多任务学习的方式捕获倾向性（propensity）、响应函数（response）以及潜在的treatment effect信号。
