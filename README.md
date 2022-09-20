@@ -1,14 +1,11 @@
-DESCN
 
-
-## Language
+## README Language
 
 - en [English](README.md)
 - zh_CN [简体中文](readme/README.zh_CN.md)
 
 
-English 
--------
+## DESCN
 Implementation of paper [DESCN: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation](https://arxiv.org/abs/2207.09920), which is accepted in [SIGKDD 2022](https://kdd.org/kdd2022/) Applied Data Science Track.
 
 #### Related concepts
