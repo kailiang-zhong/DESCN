@@ -41,7 +41,7 @@ search_parames.py 工具调用例子:\
 >- `./results/lzd_real` and `./runs` should be created. 
 
 ## 数据集
-`./data` 包含了Lazada 电商平台的真实数据集
+`./data` 包含了 [Lazada电商平台的真实数据集](../data)
 
 ## Python 包版本
 - python == 3.7
