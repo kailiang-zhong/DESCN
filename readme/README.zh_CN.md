@@ -1,5 +1,4 @@
-##DESCN
-
+## DESCN
 
 这是关于论文 [DESCN: Deep Entire Space Cross Networks for Individual Treatment Effect Estimation](https://arxiv.org/abs/2207.09920) 的实现, 该论文已被 [SIGKDD 2022](https://kdd.org/kdd2022/) Applied Data Science Track
 接收。 
