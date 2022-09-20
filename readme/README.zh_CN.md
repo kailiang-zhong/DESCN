@@ -23,12 +23,12 @@ DESCN的思路受启发于[ESMM](https://arxiv.org/abs/1804.07931) 和[X-learner
 所有实验都使用了GPU做训练和预测，版本： `CUDA Verson:11.4`
 ## 代码使用方法
 `main.py`: 所有模型的main文件（除了X-learner）。  
-利用[Hydra's](https://hydra.cc/) 管理模型配置。不同模型通过设置sub-loss权重决定使用相应的sub-loss 项
+利用[Hydra](https://hydra.cc/) 管理模型配置。不同模型通过设置sub-loss权重决定使用相应的sub-loss 项
 
 `x_learner_main.py`:  X-learner(NN based)模型的main文件  
 `eval4real_data.py`:  Lazada电商平台真实数据的评估代码.   
 `eval.py`: ACIC 虚拟数据集的评估代码.  
-`search_parames.py`: 一个串行调度工具，可以通过命令行指定模型参数文件、评估代码、训练集、预测集、方便地完成训练-预测-评估全流程。 并且会利用[Hydra's](https://hydra.cc/) 的特性使得模型参数生效。
+`search_parames.py`: 一个串行调度工具，可以通过命令行指定模型参数文件、评估代码、训练集、预测集、方便地完成训练-预测-评估全流程。 并且会利用[Hydra](https://hydra.cc/) 的特性使得模型参数生效。
 
 
 search_parames.py 工具调用例子:\
