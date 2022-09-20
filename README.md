@@ -47,7 +47,7 @@ NOTE:
 >- `./results/lzd_real` and `./runs` should be created. 
 
 ## Dataset
-`./data` contain [the real-world Production Dataset from E-commerce platform Lazada.]((data))
+`./data` contain [the real-world Production Dataset from E-commerce platform Lazada.](data)
 
 ## Python packages version
 - python == 3.7
@@ -102,7 +102,7 @@ search_parames.py 工具调用例子:\
 >- `./results/lzd_real` and `./runs` should be created. 
 
 ## 数据集
-`./data` 包含了 [Lazada电商平台的真实数据集]((data))
+`./data` 包含了 [Lazada电商平台的真实数据集](data)
 
 ## Python 包版本
 - python == 3.7
