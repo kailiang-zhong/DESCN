@@ -28,11 +28,13 @@ The execution process and results can be viewed in  [DeepModels_real_data.ipynb]
     
 All experiments uses GPU for training and `CUDA Verson:11.4`
 ## Code usage
-`main.py`: main process for all models, except X-learner.  
+`main.py`: main process for all models, except X-learner.   
+The codes determines whether to enable sub-loss by setting the weight to 0 or not. Different models will enable different sub-loss.
+
 `x_learner_main.py`: main process for X-learner(NN based).  
 `eval4real_data.py`: evaluation process for LAZADA real dataset.  
 `eval.py`: evaluation process for ACIC2019 dataset.  
-`search_parames.py`: A tool for scheduling training, prediction and evaluation.
+`search_parames.py`: A serial scheduling tool, which can specify the model hyper-parameter file, evaluation code, dataset through the command line, and conveniently complete the whole process.  
 
 A convenient way to call training and evaluation code serially:\
 ```python search_params.py main.py eval4real_data.py  ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
@@ -83,11 +85,13 @@ DESCN的思路受启发于[ESMM](https://arxiv.org/abs/1804.07931) 和[X-learner
     
 所有实验都使用了GPU做训练和预测，版本： `CUDA Verson:11.4`
 ## 代码使用方法
-`main.py`: 所有模型的main文件（除了X-learner）  
+`main.py`: 所有模型的main文件（除了X-learner）。  
+利用[Hydra's](https://hydra.cc/) 管理模型配置。不同模型通过设置sub-loss权重决定使用相应的sub-loss 项
+
 `x_learner_main.py`:  X-learner(NN based)模型的main文件  
 `eval4real_data.py`:  Lazada真实评估代码.  
 `eval.py`: ACIC 虚拟数据集的评估代码.  
-`search_parames.py`: 一个串行调度工具，可以通过命令行指定模型参数配置文件、训练集、预测集、评估代码，方便地完成训练-预测-评估全流程。
+`search_parames.py`: 一个串行调度工具，可以通过命令行指定模型参数文件、评估代码、训练集、预测集、方便地完成训练-预测-评估全流程。 并且会利用[Hydra's](https://hydra.cc/) 的特性使得模型参数生效。
 
 search_parames.py 工具调用例子:\
 ```python search_params.py main.py eval4real_data.py  ./conf4models/lzd_real_data/DESCN.txt 1 {path_to_train_npz} {path_to_test_npz}```\
