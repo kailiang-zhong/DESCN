@@ -41,7 +41,10 @@ search_parames.py 工具调用例子:\
 >- `./results/lzd_real` and `./runs` should be created. 
 
 ## 数据集
-`./data` 包含了 [Lazada电商平台的真实数据集](../data)
+`./data` 包含了 [Lazada电商平台的真实数据集](../data) 
+
+[百度网盘下载](https://pan.baidu.com/s/1CKJvzow7UFGwrdXbkt1mQA)
+提取码: 75hr
 
 ## Python 包版本
 - python == 3.7
