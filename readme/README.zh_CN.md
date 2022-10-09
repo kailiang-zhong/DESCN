@@ -43,7 +43,7 @@ search_parames.py 工具调用例子:\
 
 注意:
 >- 所有关于路径的配置项必须填写绝对路径
->- `./results/lzd_real` and `./runs` should be created. 
+>- 文件夹 `./results/lzd_real` 以及 `./runs` 需要被创建
 
 ## 数据集
 `./data` 包含了 [Lazada电商平台的真实数据集](../data) 
