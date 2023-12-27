@@ -49,7 +49,7 @@ NOTE:
 >- `./results/lzd_real` and `./runs` should be created. 
 
 ## Dataset
-`./data` contain [the real-world Production Dataset from E-commerce platform Lazada.](data)
+`./data` contain [the real-world Production Dataset from E-commerce platform Lazada.](data/Lazada_dataset/) and [the synthetic data from the 2019 American Causal Inference Conferen(ACIC2019)](data/ACIC2019_epilepsy_dataset/)
 
 ## Python packages version
 - python == 3.7

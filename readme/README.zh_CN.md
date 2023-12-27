@@ -46,7 +46,10 @@ search_parames.py 工具调用例子:\
 >- 文件夹 `./results/lzd_real` 以及 `./runs` 需要被创建
 
 ## 数据集
-`./data` 包含了 [Lazada电商平台的真实数据集](../data) 
+`./data` 包含了 [Lazada电商平台的真实数据集](../data/Lazada_dataset/) 以及 [来自ACIC2019的虚拟数据集](../data/ACIC2019_epilepsy_dataset/) 
+
+
+
 
 [百度网盘下载](https://pan.baidu.com/s/1CKJvzow7UFGwrdXbkt1mQA)
 提取码: 75hr
