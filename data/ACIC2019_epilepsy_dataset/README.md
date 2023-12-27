@@ -4,7 +4,7 @@
 We downloaded from the official website of ACIC and packaged these codes（Data Generator Processor, DGP） into a zip file: [ACIC_2019_Generate_DGPs.zip](ACIC_2019_Generate_DGPs.zip)
 
 
-We generated the dataset using the method4 in the `SG_Generate_High_Dim_Binary/generate_simEpilepsy.R` file :
+We generated the dataset using the method4 in the `SG_Generate_High_Dim_Binary/generate_simEpilepsy.R`   which can be found in `ACIC_2019_Generate_DGPs.zip`:
 ``` R
 #------------------------------------------------------------------
 # mod 4: do treatment heterogeneity along with  IVs.
